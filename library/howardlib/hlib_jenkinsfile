@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+ 
+    stages {
+        stage('Prepare/Checkout'){
+           steps{
+               dir('library') {
+                  git branch: 'howardLib', url: 'git@gitlab.gms.bana.com:gms/library.git'
+               }
+               
+           }
+        }
+        stage('Build') {
+            steps {
+                sh '''
+                echo 'Building howardLib...'
+                pwd
+                ls
+		cd howardlib
+		ls 
+                ./a.out
+		echo 'Done running.'
+
+                '''
+            }
+        }
+        stage('Finish') {
+            steps {
+                echo 'Done with howardLib...'
+            }
+        }
+    }
+}
+	
