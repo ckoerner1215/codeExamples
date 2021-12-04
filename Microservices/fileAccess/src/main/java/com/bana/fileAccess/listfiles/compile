@@ -1,0 +1,4 @@
+javac RecursiveListFileDisplay.java
+
+java -cp . RecursiveListFileDisplay
+

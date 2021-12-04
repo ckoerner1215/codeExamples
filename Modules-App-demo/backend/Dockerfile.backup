@@ -1,0 +1,26 @@
+#### Stage 1: Build the application
+FROM openjdk:8-jdk-alpine
+
+# Set the current working directory inside the image
+WORKDIR /apps
+
+# Copy maven executable to the image
+COPY mvnw .
+COPY .mvn .mvn
+
+# Copy the pom.xml file
+COPY pom.xml .
+COPY . .
+# Build all the dependencies in preparation to go offline.
+RUN ./mvnw dependency:go-offline -B
+
+
+
+# Package the application
+RUN ./mvnw package -DskipTests
+
+# Copy the project source
+COPY src src
+RUN cp -rf /apps/target/backend-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT ["java","-jar","app.jar"]

@@ -1,0 +1,42 @@
+sudo docker container ls
+sudo docker images
+
+sudo docker stop fileaccess
+sudo docker rm fileaccess
+sudo docker rmi fileaccess
+
+mvn clean install
+
+sudo docker build -t fileaccess .
+
+sudo docker run -it --name fileaccess -p 8001:8001 -d fileaccess
+sudo docker run -it --name fileaccess -p 8001:8001 -v /apps/carolyn/prod/fileAccess:/app/prod/fileAccess -d fileaccess
+sudo docker run -it --name fileaccess -p 8001:8001 --net my-web-net -v /apps/carolyn/prod:/app/prod -d fileaccess
+
+sudo docker run --name frontendclient -d --net my-web-net -p 4444:4444 frontend-image
+
+sudo docker exec -it fileaccess /bin/sh
+
+sudo docker logs -f fileaccess
+
+ssh -L 8001:localhost:8001 carolyn@172.31.32.47
+
+
+ssh -L 8081:localhost:8081 -L 8888:localhost:8888 -L 8001:localhost:8001 -L 5551:localhost:5551 carolyn@172.31.32.47
+
+
+
+docker stop fileaccess
+docker rm fileaccess
+docker rmi fileaccess
+
+rm -rf target
+mvn clean install
+
+docker build -t fileaccess .
+docker run -it --name fileaccess -p 8888:8888  --net my-web-net -v /apps/carolyn/prod:/app/prod -d fileaccess
+
+docker exec -it fileaccess /bin/sh
+docker logs -f fileaccess
+
+

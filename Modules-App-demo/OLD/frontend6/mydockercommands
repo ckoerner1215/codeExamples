@@ -1,0 +1,53 @@
+sudo docker container ls
+sudo docker images
+
+sudo docker stop frontend6
+sudo docker rm frontend6
+sudo docker rmi frontend6
+
+mvn clean install
+
+sudo docker build -t frontend6 .
+
+sudo docker run -it --name frontend6 -p 6666:6666 -d frontend6
+sudo docker run -it --name frontend6 -p 6666:6666 -v /apps/carolyn/prod:/app/prod -d frontend6
+sudo docker run -it --name frontend6 -p 6666:6666 --net my-web-net -v /apps/carolyn/prod:/app/prod -d frontend6
+
+
+
+
+
+
+
+sudo docker build -t frontend-image .
+sudo docker run --name frontendclient -d --net my-web-net -p 4444:4444 frontend-image
+
+sudo docker run -it --name frontend2 -p 5555:5555 --net my-web-net -v /apps/carolyn/prod:/app/prod -d frontend2
+
+
+sudo docker exec -it ck001microservice_2 /bin/sh
+
+sudo docker logs -f ck001microservice_2
+
+ssh -L 8111:localhost:8111 carolyn@172.31.32.47
+
+ssh -L 8081:localhost:8081 -L 8222:localhost:8222 -L 4444:localhost:4444 -L 5555:localhost:5555 -L 8111:localhost:8111 carolyn@172.31.32.47
+
+
+
+
+docker stop frontend6
+docker rm frontend6
+docker rmi frontend6
+docker build -t frontend6 .
+docker run -it --name frontend6 -p 5551:5551  --net my-web-net -v /apps/carolyn/prod:/app/prod -d frontend6
+
+ssh -L 8888:localhost:8888 -L 5551:localhost:5551 -L 8081:localhost:8081 carolyn@172.31.32.47
+
+ssh -L 8112:localhost:8112 -L 8111:localhost:8111 -L 8113:localhost:8113 -L 5555:localhost:5555 -L 8081:localhost:8081 carolyn@172.31.32.47
+
+
+docker exec -it frontend /bin/sh
+docker logs -f frontend
+
+

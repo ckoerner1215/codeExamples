@@ -1,0 +1,102 @@
+User file for ck001 microservice
+--------------------------------
+
+The will run the ck001 module, meaning it will run the ck001.ksh file, which
+runs ck001.exe, with 2 input files and creates 3 output files.
+
+To run on govcloud, on command line in root directory of the project:
+
+     mvn spring-boot:run
+
+This will build and run/start the microservice.  You will then be able to access 
+the 2 REST endpoints via Postman or a browser, at
+
+GET:
+http://localhost:8888/ck001/run
+
+POST:
+http://localhost:8888/ck001/run
+with something like this as the POST body:
+{
+    "name": "ck001",
+    "description": "Calculates lat lon values...",
+    "infile1": "/app/prod/ck001/INPUT/input.dat",
+    "infile2": "/app/prod/ck001/INPUT/llh.bin",
+    "outputDirectory": "/app/prod/ck001/OUTPUT",
+    "scriptLocation": "/app/src/main/resources/static",
+    "executableLocation": "/app/src/main/resources/static/sccs"
+}
+
+Alternatively you can first build the project with
+
+    mvn clean install
+
+which will create a target directory with a ck001-0.0.1-SNAPSHOT.jar file in it.  
+Then you can run the .jar file with 
+
+     java -jar target/ck001-0.0.1-SNAPSHOT.jar
+
+Either way will get the microservice up and running.
+
+-----------------------------------------------------------------------
+Note that you will first have to create a tunnel in a GitBash window in 
+Amazon Workspaces to see it there:
+
+   ssh -L 8888:localhost:8888 <username>:172.31.32.47
+-----------------------------------------------------------------------
+
+
+
+To run it in a Docker container:
+
+First check to see if there is already a docker image and container for it:
+           sudo docker container ls
+           sudo docker images
+
+If there is already a docker image you will see something like this for the image:
+REPOSITORY                         TAG                     IMAGE ID            CREATED             SIZE
+ck001                              latest                  541f00f5f536        14 minutes ago      832MB
+
+And something like this for the conatainer:
+CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+606bc7cfb92e        ck001                    "java -jar ck001-0.0…"   14 minutes ago      Up 14 minutes       0.0.0.0:8888->8888/tcp   ck001microservice
+
+If there is no container and image, first create the image :
+
+           sudo docker build -t ck001 .
+
+
+And then the container:
+
+           sudo docker run -it --name ck001microservice -p 8888:8888 -d ck001
+
+OR
+           sudo docker run -it --name ck001microservice -p 8888:8888 -v /apps/carolyn/prod:/app/prod -d ck001
+
+
+The second command will get all of the files and subdirectories in /apps/carolyn/prod (on the govcloud server) and put them in 
+the directory /app/prod in the docker container.  So you will have access to all of the files and subdirectories when you are
+in the docker container.  
+
+Also, if you create any files while you are in the docker container, and they are in /app/prod, then they will also be created
+in /apps/carolyn/prod on the govcloud server.  They will be there even after the container is stopped, and/or removed.
+
+When specifying the location of input files, the output directory, or the location of the script or executable, 
+in a POST request (see above), you can use either an absolute path, like
+/app/prod/ck001/INPUT, or a relative path, knowing that you are in /app in the docker container.  So for the relative
+path you would have prod/ck001/INPUT.
+
+
+You can then use the same URL with Postman or a browser to run it, but this time it will be running 
+in the Docker container.
+
+You can go to the docker container and see the output this way:
+
+           sudo docker exec -it ck001microservice /bin/sh
+
+See the Dockerfile to see how the image is being built.
+
+
+
+
+

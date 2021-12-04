@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#Note that this script is NOT called from the jenkins file,
+#nor is is meant to be called from the jenkins file.
+#This is only to be run from the command line if you want to 
+#compare the outputs.  It is just an easier way to call the
+#CompareTextFiles.py Python code in the tools repo.
+#You can see that it assumes the output files are in
+#the ck009 directory and the ck009/CORRECT_OUTPUT directory.
+
+EXECUTABLE='../../../tools/CompareTextFiles.py'
+MODULE=ck009
+
+echo '-------------------------------------------'
+echo 'This is the output from CompareTextFiles Python code....'
+echo '-------------------------------------------'
+
+python ${EXECUTABLE} ../${MODULE}-out.txt ../CORRECT_OUTPUT/${MODULE}-out.txt
+exitcode=$?
+echo 'Exit code: ' $exitcode
+
+echo '  '
+echo '---------------------------------------------'
+
+if [[ $exitcode -eq 0 ]]; then
+      exit 0
+else
+      exit 1 
+fi
+
+
+
+

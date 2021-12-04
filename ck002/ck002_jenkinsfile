@@ -1,0 +1,45 @@
+@Library('jenkins-shared-library')_
+
+def module = 'ck002'
+pipeline {
+    agent any
+    options {
+    buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
+    }
+    parameters {
+        booleanParam(defaultValue: false, description: '', name: 'ForceBuild')
+    }
+    
+    stages {
+    stage("Do Everything") {
+    when {
+        anyOf{
+            changeset "**/" + "${module}" + "/**"
+            expression {params.ForceBuild}
+        }
+    }
+    stages {
+        stage('Checkout the library repository'){
+           steps{
+		      checkoutLibraryRepo('master')
+           }
+        }
+        stage('Build and Run') {
+            steps {
+                sh """
+                cd ${module}
+                make
+                ./sinfft.exe
+                """
+            }
+        }
+        stage('Finish') {
+            steps {
+                echo "Done with ${module}"
+            }
+        }
+    }
+    }
+    }
+}
+

@@ -1,0 +1,106 @@
+Find all running Docker containers:
+
+docker ps
+[carolyn@gms-dev fileAccess]$ docker ps
+CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+4565bc246496        frontend7                "docker-entrypoint.s…"   9 days ago          Up 9 days           0.0.0.0:5551->5551/tcp   frontend7
+02e157203b38        fileaccess               "java -jar fileAcces…"   9 days ago          Up 9 days           0.0.0.0:8001->8001/tcp   fileaccess
+3dbe49ce8ab8        generic                  "java -jar generic-0…"   9 days ago          Up 9 days           0.0.0.0:8888->8888/tcp   generic
+72c7ec611dc2        sonarqube                "bin/run.sh bin/sona…"   7 weeks ago         Up 7 weeks          0.0.0.0:9001->9000/tcp   sonarqube_sonarqube_1
+aa1476a9ec09        postgres                 "docker-entrypoint.s…"   7 weeks ago         Up 7 weeks          5432/tcp                 sonarqube_db_1
+75512b398df6        frontend                 "docker-entrypoint.s…"   2 months ago        Up 2 months         0.0.0.0:5555->5555/tcp   frontend
+d232a26d410d        ck100                    "java -jar ck100-0.0…"   2 months ago        Up 2 months         0.0.0.0:8113->8113/tcp   ck100
+1b379f8f527e        ck009                    "java -jar ck009-0.0…"   2 months ago        Up 2 months         0.0.0.0:8112->8112/tcp   ck009
+6da60c4ada43        ck001                    "java -jar ck001-0.0…"   2 months ago        Up 2 months         0.0.0.0:8111->8111/tcp   ck001
+3448fcfecdaf        backend:0.0.1-SNAPSHOT   "/cnb/process/web"       4 months ago        Up 2 months         0.0.0.0:8081->8080/tcp   backendapp2
+460146a3615d        mysql:latest             "docker-entrypoint.s…"   4 months ago        Up 2 months         3306/tcp, 33060/tcp      mysqldb
+
+
+Here I see that I have a Docker container called mysqldb, which is the mysql server.  
+
+To see the database that is running in mysqldb:
+
+docker exec -it mysqldb /bin/sh
+
+username:  root
+password:  fgh75oHTY@#(78)$$
+
+
+or 
+
+
+username:  testdb
+password:  uygheR6HHG&*
+
+
+-----------------------------------------------------------
+
+[carolyn@gms-dev ~]$ docker exec -it mysqldb /bin/sh
+# mysql -u root -p
+Enter password: fgh75oHTY@#(78)$$
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 43770
+Server version: 8.0.23 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demodb             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testdb             |
+| testdb_2           |
+| user_db            |
+| user_db2           |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> use testdb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_testdb   |
++--------------------+
+| hibernate_sequence |
+| modules            |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from modules;
++----+--------------------------+----------------------+---------+
+| id | description              | published            | title   |
++----+--------------------------+----------------------+---------+
+| 34 | sdfttttttttttttttttgdfgf | 0x00                 | ck001   |
+| 35 | rgretdfgdfgdfg           | 0x00                 | ck009   |
+| 36 | rrrrrrrrrrrddddrrrrrr    | 0x00                 | ck100   |
+| 37 | sdfsdfasdf               | 0x00                 | t001    |
+| 38 | gddrgrt                  | 0x00                 | ertrert |
++----+--------------------------+----------------------+---------+
+5 rows in set (0.00 sec)
+
+mysql>
+
+---------------------------------------------------
+
+MYSQL commands:
+
+show databases;
+use testdb;
+show tables;
+select * from modules;
+
+

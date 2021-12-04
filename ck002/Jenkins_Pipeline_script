@@ -1,0 +1,30 @@
+node {
+    stage('Prepare/Checkout'){
+        dir('library') {
+               git branch: 'cklib', url: 'git@gitlab.gms.bana.com:gms/library.git'
+            }
+            dir('prod') {
+               git branch: 'ck002', url: 'git@gitlab.gms.bana.com:gms/prod.git'
+            }
+	}
+
+	stage('Build'){
+	   sh('pwd')
+	   sh('ls prod/ck002')
+	   sh('ls library')
+	   dir('prod/ck002'){
+	       sh('pwd')
+	       sh('make')
+	       sh('./sinfft.exe')
+	   }
+	}
+	
+	stage('Cleanup'){
+	    dir('prod'){
+	        sh('rm -rf ck002@tmp')
+	    }
+	    sh('rm -rf prod@tmp')
+	}
+}
+
+

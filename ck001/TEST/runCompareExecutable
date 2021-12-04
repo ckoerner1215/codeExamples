@@ -1,0 +1,34 @@
+EXECBASE1=compareBinaryOutputFiles
+EXECUTABLE1=$PWD/$EXECBASE1.exe
+
+echo '-------------------------------------------'
+echo 'This is the output from compareBinaryOutputFiles....'
+echo '-------------------------------------------'
+$EXECUTABLE1 < inputForBinaryCompareScript
+exitcode1=$?
+echo 'Exit code: ' $exitcode1
+
+echo '  '
+
+EXECBASE2=compareTextOutputFiles
+EXECUTABLE2=$PWD/$EXECBASE2.exe
+
+echo '--------------------------------------------'
+echo 'This is the output from compareTextOutputFiles...'
+echo '--------------------------------------------'
+$EXECUTABLE2 < inputForTextCompareScript
+exitcode2=$?
+echo 'Exit code: ' $exitcode2
+echo '---------------------------------------------'
+
+if [[ $exitcode1 -eq 0 ]]; then
+      exit 0
+elif [[ $exitcode2 -eq 0 ]]; then
+      exit 0
+else
+      exit 1
+fi
+
+
+
+

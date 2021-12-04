@@ -1,0 +1,43 @@
+sudo docker container ls
+sudo docker images
+
+sudo docker stop ck001microservice
+sudo docker rm ck001microservice
+sudo docker rmi ck001
+
+mvn clean install
+
+sudo docker build -t ck001 .
+
+sudo docker run -it --name ck001microservice -p 8222:8222 -d ck001
+sudo docker run -it --name ck001microservice -p 8222:8222 -v /apps/carolyn/prod/ck001:/app/prod/ck001 -d ck001
+sudo docker run -it --name ck001microservice -p 8222:8222 --net my-web-net -v /apps/carolyn/prod:/app/prod -d ck001
+
+sudo docker build -t frontend-image .
+sudo docker run --name frontendclient -d --net my-web-net -p 4444:4444 frontend-image
+
+sudo docker exec -it ck001microservice /bin/sh
+
+sudo docker logs -f ck001microservice
+
+ssh -L 8222:localhost:8222 carolyn@172.31.32.47
+
+
+ssh -L 8081:localhost:8081 -L 8222:localhost:8222 -L 4444:localhost:4444 -L 5555:localhost:5555 -L 8111:localhost:8111 carolyn@172.31.32.47
+
+
+
+docker stop ck100
+docker rm ck100
+docker rmi ck100
+
+rm -rf target
+mvn clean install
+
+docker build -t ck100 .
+docker run -it --name ck100 -p 8113:8113  --net my-web-net -v /apps/carolyn/prod:/app/prod -d ck100
+
+docker exec -it ck100 /bin/sh
+docker logs -f ck100
+
+

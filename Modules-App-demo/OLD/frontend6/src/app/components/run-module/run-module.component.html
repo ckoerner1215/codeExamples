@@ -1,0 +1,31 @@
+<div *ngFor="let label of labels; let i = index">
+   <label class="form-label"> <b> {{ label }}</b> :  {{ labelDescriptions[i] }}</label>
+
+   <div *ngIf="label === 'Name'">
+       <b> Description </b> : {{ currentModule.description }}
+   </div>
+
+   <div *ngIf="label !='Name'">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="runInfo[keys[i]]"
+      required
+    />
+   </div>
+   <br>
+</div>
+
+<div *ngIf=validModule>
+
+<button
+  type="submit"
+  class="badge badge-warning mr-2"
+  (click)="runModule()"
+>  Run
+</button>
+</div>
+<div innerHTML="{{message}}"></div>
+
+
+

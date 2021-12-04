@@ -1,0 +1,120 @@
+In backend directory:
+--------------------
+mvn spring-boot:run
+
+This starts the REST API that connects to the database.
+
+--------------------------------------------------------------------------------
+ONLY IF YOU ARE RUNNING ON govcloud SERVER IN AMAZON WORKSPACES:
+In GitBash window, in Amazon Worksapces, create a tunnel:
+
+ssh -L 8081:localhost:8081 <username>@<ip address of govcloud server>
+---------------------------------------------------------------------------------
+
+This part runs on port 8081.
+
+Endpoint:
+http://localhost:8081/api/modules
+(It is not necessary to go to this URL, but if you want to check the modules
+table in the database, you can do it like this.)
+
+Port can be changed in backend/src/main/resources/application.properties
+
+***********************************************************************************
+In Microservices/fileAccess directory:
+-------------------------------------
+mvn spring-boot:run
+
+This starts the REST API for file access stuff.
+
+--------------------------------------------------------------------------------
+ONLY IF YOU ARE RUNNING ON govcloud SERVER IN AMAZON WORKSPACES:
+In GitBash window, in Amazon Worksapces, create a tunnel:
+
+ssh -L 8001:localhost:8001 <username>@<ip address of govcloud server>
+---------------------------------------------------------------------------------
+
+This part runs on port 8001.
+
+Endpoints:
+http://localhost:8001/uploadFile
+http://localhost:8001/moveToModuleDirectory
+http://localhost:8001/uploadMultipleFiles
+http://localhost:8001/downloadFile/{fileName:.+}
+http://localhost:8001/listfiles
+http://localhost:8001/listdirectories
+http://localhost:8001/showfile
+
+Note that these are all POST requests, that require RequestBody.
+
+***********************************************************************************
+In Microservices/generic directory:
+-------------------------------------
+mvn spring-boot:run
+
+This starts the REST API for running a module (running a .ksh file).
+
+--------------------------------------------------------------------------------
+ONLY IF YOU ARE RUNNING ON govcloud SERVER IN AMAZON WORKSPACES:
+In GitBash window, in Amazon Worksapces, create a tunnel:
+
+ssh -L 8888:localhost:8888 <username>@<ip address of govcloud server>
+---------------------------------------------------------------------------------
+
+This part runs on port 8888.
+
+Endpoints:
+http://localhost:8888/run
+
+Note that this is a  POST request, that require RequestBody.
+
+
+***********************************************************************************
+***********************************************************************************
+***********************************************************************************
+***********************************************************************************
+
+In frontend7 directory:
+----------------------
+npm install
+npm update
+npm install bootstrap
+
+This will create node_modules directory.  You should only need to do this the first
+time you are running the application.
+
+Then, the following command starts the front end application (which accesses the backend):
+
+ng serve
+
+--------------------------------------------------------------------------------
+ONLY IF YOU ARE RUNNING ON govcloud SERVER IN AMAZON WORKSPACES:
+In GitBash window, in Amazon Workspaces, create a tunnel
+
+ssh -L 5551:localhost:5551 <username>@<ip address of govcloud server>
+---------------------------------------------------------------------------------
+
+This part runs on port 5551.
+
+http://localhost:5551
+
+Now, if you go to this URL, you should see the application running, and be able to
+see all of the modules in the database, and add/delete them also.
+
+The port can be changed in frontend7/angular.json
+Search for "port" and change the value there.
+
+Also, URLs for the Apis are set in frontend7/src/environments/enviroment.ts.
+So these need to match what is set in each of the microservices (see above).
+
+export const environment = {
+  production: false,
+  backendURL: 'http://localhost:8081/api/modules',
+  microserviceURL: 'http://localhost:8888/run',
+  baseURL: 'http://localhost:8888',
+  fileAccessURL: 'http://localhost:8001',
+  repoRootDirectory: '/app/prod/'
+};
+
+These values can then be accessed in frontend7/src/app/services/module.service.ts:
+

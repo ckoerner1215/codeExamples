@@ -1,0 +1,58 @@
+<label class="form-label" for="inputFile1">Input file 1</label>
+<input 
+   type="text" 
+   class="form-control" 
+   [(ngModel)]="runinfo.inputfile1"
+   id="inputFile1" 
+   required 
+/>
+<br>
+<label class="form-label" for="inputFile2">Input file 2</label>
+<input 
+   type="text" 
+   class="form-control" 
+   [(ngModel)]="runinfo.inputfile2"
+   id="inputFile2" 
+   required 
+/>
+<br>
+<label class="form-label" for="outputDirectory">Output File Directory</label>
+<input 
+    type="text" 
+    class="form-control" 
+    [(ngModel)]="runinfo.outputdirectory"
+    id="outputDirectory" 
+    required
+/>
+<br>
+<label class="form-label" for="scriptLocation">Script Location</label>
+<input 
+    type="text" 
+    class="form-control" 
+    [(ngModel)]="runinfo.scriptlocation"
+    id="scriptLocation" 
+    required 
+/>
+<br>
+<label class="form-label" for="executableLocation">Executable Location</label>
+<input  
+    type="text" 
+    class="form-control" 
+    [(ngModel)]="runinfo.executablelocation"
+    id="executableLocation" 
+    required
+/>
+    <!-- readonly -->
+<br>
+
+    <button
+      type="submit"
+      class="badge badge-warning mr-2"
+      (click)="runModule()"
+    >
+      Run
+    </button>
+    <div innerHTML="{{message}}"></div>
+
+
+

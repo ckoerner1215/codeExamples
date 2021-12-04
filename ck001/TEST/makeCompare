@@ -1,0 +1,32 @@
+#Makefile for compareBinaryOutputFiles and compareTextOutputFiles
+MODULE1=compareBinaryOutputFiles
+MODULE2=compareTextOutputFiles
+FILE1=compareBinaryOutputFiles
+FILE2=compareTextOutputFiles
+CC=gfortran
+OPTIONS=--save-temps -fcheck=all -g
+
+all: $(MODULE1).exe $(MODULE2).exe
+
+$(MODULE1).exe: $(FILE1).o
+	$(CC) $(OPTIONS) -C -o$(MODULE1).exe $(FILE1).o
+	@echo '$(MODULE1) build complete'
+
+$(FILE1).o: $(FILE1).f
+	$(CC) $(OPTIONS) -C -c $(FILE1).f
+	
+$(MODULE2).exe: $(FILE2).o
+	$(CC) $(OPTIONS) -C -o$(MODULE2).exe $(FILE2).o
+	@echo '$(MODULE2) build complete'
+
+$(FILE2).o: $(FILE2).f
+	$(CC) $(OPTIONS) -C -c $(FILE2).f
+
+install:
+	cp $(MODULE1).exe ../$(MODULE1).exe
+	cp $(MODULE2).exe ../$(MODULE2).exe
+
+clean:
+	rm -f *.o
+	rm -f *.s
+	rm -f *.exe

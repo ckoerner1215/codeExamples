@@ -1,0 +1,54 @@
+@Library('jenkins-shared-library')_
+
+def module = 'ck001'
+
+pipeline {
+    agent any
+    options {
+    buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
+//    ansiColor('xterm')
+    }
+    parameters {
+        booleanParam(defaultValue: false, description: '', name: 'ForceBuild')
+    }
+    stages {
+    stage('Do Everything') {
+    when {
+        anyOf{
+            changeset "**/" + "${module}" + "/**"
+            expression {params.ForceBuild}
+        }
+    }
+    stages {
+        stage("Demo") {
+            steps{
+                setColor('on_blue')
+                echo "This is calling the shared library...."
+                sayHello 'Carolyn Koerner'
+                unsetColor()
+            }
+        }
+        stage('Build, Run, Test') {
+            steps {
+                buildSteps "${module}"
+                runKsh "${module}"
+                testStepsForCk001 "${module}"
+            }
+        }
+        stage('Finish') {
+            steps {
+                sh "cat ${module}/output.dat"
+                //sh 'printenv'
+                //sh "git pull origin ${env.BRANCH_NAME}"
+            }
+        }
+    }
+    }
+    }
+    post{
+        always{
+           echo "Done with ${module}"
+        }
+    }
+}
+

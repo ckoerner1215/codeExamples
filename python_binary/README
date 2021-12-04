@@ -1,0 +1,78 @@
+Fortran codes that create sequential binary files:
+
+writeSEQBinaryFile4.f 
+Writes a sequential binary file.  
+You can specify the number of rows/records in the file, as well as the number of elements in each record.  
+All values are 4 byte floats.  Since this is a sequential file, we will have bookends at the beginning and end of each record.  
+The value of the bookend is the number of bytes in each record, not including the bookends.  
+The bookends are always 4 byte integers.
+
+The name of the file will be Sequential_nxm.bin4, where n is the number of elements in each record and m is the number of rows/records in the file.
+
+Run like so:   ./writeSEQBinaryFile4.exe
+
+writeSEQBinaryFile8.f
+Writes a sequential binary file.  You can specify the number of rows/records in the file, as well as the number of 
+elements in each record.  All values are 8 byte floatss.  Since this is a sequential file, we will have bookends at the 
+beginning and end of each record.  The value of the bookend is the number of bytes in each record, not including the bookends.  The bookends are always 4 byte integers.
+
+The name of the file will be Sequential_nxm.bin8, where n is the number of elements in each record and m is the number of rows/records in the file.
+
+Run like so:   ./writeSEQBinaryFile8.exe
+
+The makefile will compile both of these to create the executables.
+
+                 make all
+
+Python script to write a Direct Access binary file:
+
+writeDirectAccessBinary.py
+Writes a direct access binary file.  You can specify the number of records in the file, the number of elements in each record, and whether you want to use 4 byte floats or 8 byte floats.  
+The name of the file created will be 
+
+DirectAccess_nxm.bin4   for 4 byte floats
+DirectAccess_nxm.bin8   for 8 byte floats
+
+where n is the number of elements in each record and m is the number of records in the file.
+
+Run like so:  python writeDirectAccessBinary.py
+
+Python scripts to read a binary file:
+
+readDirectAccessBinary.py  
+Reads a direct access binary file (created by the Python script, or any other direct access file that you have).  
+Specify the name of the file, as well as the number of elements in each record.  You have to know this ahead of time 
+for a direct access file.  
+All records in the direct access file are assumed to be the same length (same number of bytes) and the 
+values are all the same type (4 or 8 byte floats).  The user specifies whether there are 4 or 8 bytes floats in the file.  
+
+Run like so:  python readDirectAccessBinary.py
+
+readRecordDAC.py  
+Reads one record of a direct access file.  The user is asked to specify the name of the file, the type of data (4 or 8 byte floats), the number of elements per record, and the record number to be read.  
+The script will keep asking for more records until "0" is entered.  The records are numbered starting from 1.
+
+Run like so:  python readRecordDAC.py
+
+readSequentialBinary.py
+Reads a sequential access binary file (created by the Fortran code, or any other sequential file that you have).  
+The user is asked to specify the name of the file, and the type of data (4 or 8 byte floats).  
+It prints out the entire file.  Since this is a sequential file, the script also reads the bookends, which tell the number of bytes in each record (not including the bookends).  The bookends are always 4 byte integers.  
+
+Run like so: python readSequentialBinary.py
+
+readRecordSEQ.py  
+Reads one record of a sequential file.  The user is asked to specify the name of the file, the type of data (4 or 8 byte floats),  and the record number to be read.  
+The script will keep asking for more records until "0" is entered.  The records are numbered starting from 1.
+
+Run like so:  python readRecordSEQ.py
+
+Script to compare 2 direct access binary files:
+
+compareDACBinary.py
+User enters the name of each of the 2 direct access binary files, the number of elements in each record, and the type of data (4 or 8 byte floats).  User also chooses to see ALL of the differences in the files, or just the first one, and then stop.
+
+Run like so:  python compareDACBinary.py
+
+
+

@@ -1,0 +1,25 @@
+<div *ngFor="let key of keys; let i = index">
+<label class="form-label"> {{ key }} </label>
+<input
+   type="text"
+   class="form-control"
+   [(ngModel)]="values[i]"
+   required
+/>
+<br>
+
+</div>
+
+<br>
+
+    <button
+      type="submit"
+      class="badge badge-warning mr-2"
+      (click)="runModule()"
+    >
+      Run
+    </button>
+    <div innerHTML="{{message}}"></div>
+
+
+

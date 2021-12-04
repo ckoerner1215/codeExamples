@@ -1,0 +1,41 @@
+def frontend7 = '/apps/jenkins/workspace/Module-App-demo/Modules-App-demo/frontend7'
+def backend = '/apps/jenkins/workspace/Module-App-demo/Modules-App-demo/backend'
+
+node {
+    VERSION = "${BUILD_NUMBER}" ///Build number as version
+    ECRURL = 'https://158999742380.dkr.ecr.us-gov-west-1.amazonaws.com/gms-container-repo'
+    ECRCRED = 'ecr:us-gov-west-1:Jenkins_ECR_Login' ///ecr region and creddential id
+    PROJECT = 'gms-container-repo' /// Project is the ecr repository
+    IMAGE = "$PROJECT:$VERSION"
+    IMAGETAG = "$ECRURL, $VERSION"
+    def frontendImage
+    def backendImage
+    docker.withRegistry(ECRURL, ECRCRED) { 
+      stage('Clone repo') {
+        checkout scm
+      }
+      stage('Build frontend7') {
+        frontendImage = docker.build("gms-container-repo:frondend7-v1.0.1", "$frontend7")
+      } 
+      stage('Build backend') {
+        backendImage = docker.build("gms-container-repo:backend-v1.0.2", "$backend")
+      }
+      stage('Push frontend7 image') {
+         /// frontendImage.push("${env.BUILD_NUMBER}")
+          frontendImage.push()
+      }
+      stage('Push backend image') {
+         /// backendImage.push("${env.BUILD_NUMBER}")
+          backendImage.push()
+      }
+      stage('Post Build') {
+          sh "docker rmi ${env.BUILD_NUMBER} | true"
+          sh "docker rmi $IMAGE, $IMAGETAG | true"
+      }
+      ///stage('Clean result image') {
+         /// sh "docker rmi ${env.BUILD_NUMBER} | true"
+          ///sh "docker rmi $IMAGE, $IMAGETAG | true"
+     /// }
+
+    }
+}

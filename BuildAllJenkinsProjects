@@ -1,0 +1,58 @@
+pipeline {                  //indicate the job is written in Declarative Pipeline
+    agent any               //agent specifies where the pipeline will execute.
+    parameters {
+        booleanParam(defaultValue: false, description: '', name: 'ForceBuild')
+    }
+
+    stages {
+        stage ("build") {   //an arbitrary stage name
+        when {
+            anyOf{
+                expression {params.ForceBuild}
+            }
+        }
+            steps {            //this is where we specify which job to invoke.
+                build (
+                    job: 'ck001',
+                    parameters: [
+                       [
+                          $class: 'BooleanParameterValue',
+                          name: 'ForceBuild',
+                          value: params.ForceBuild
+                       ]
+                    ]
+                )
+                build (
+                    job: 'ck002',
+                    parameters: [
+                       [
+                          $class: 'BooleanParameterValue',
+                          name: 'ForceBuild',
+                          value: params.ForceBuild
+                       ]
+                    ]
+                )
+                build (
+                    job: 'ck003',
+                    parameters: [
+                       [
+                          $class: 'BooleanParameterValue',
+                          name: 'ForceBuild',
+                          value: params.ForceBuild
+                       ]
+                    ]
+                )
+                build (
+                    job: 'ck004',
+                    parameters: [
+                       [
+                          $class: 'BooleanParameterValue',
+                          name: 'ForceBuild',
+                          value: params.ForceBuild
+                       ]
+                    ]
+                )
+            }
+        }
+    }
+}

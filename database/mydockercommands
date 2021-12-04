@@ -1,0 +1,46 @@
+docker container ls
+docker images
+
+docker stop databaserestapi
+docker rm databaserestapi
+docker rmi databaserestapi
+
+mvn clean install
+
+docker build -t databaserestapi .
+
+docker run -it --name databaserestapi -p 5552:5552 -d databaserestapi
+docker run -it --name databaserestapi -p 5552:5552 -v /apps/carolyn/prod:/app/prod -d databaserestapi
+docker run -it --name databaserestapi -p 8456:8456 --net my-web-net -v /apps/carolyn/prod:/app/prod -d databaserestapi
+
+
+
+ ?? docker run --name frontendclient -d --net my-web-net -p 4444:4444 frontend-image
+
+
+docker exec -it databaserestapi /bin/sh
+
+docker logs -f databaserestapi
+
+ssh -L 5552:localhost:5552 carolyn@172.31.32.47
+
+ssh -L 8081:localhost:8081 -L 5552:localhost:5552 -L 8001:localhost:8001 -L 8888:localhost:8888 carolyn@172.31.32.47
+
+
+
+
+docker stop databaserestapi
+docker rm databaserestapi
+docker rmi databaserestapi
+docker build -t databaserestapi .
+docker run -it --name databaserestapi -p 5552:5552  --net my-web-net -v /apps/carolyn/prod:/app/prod -d databaserestapi
+
+ssh -L 8456:localhost:8456 carolyn@172.31.32.47
+
+ssh -L 8112:localhost:8112 -L 8111:localhost:8111 -L 8113:localhost:8113 -L 5555:localhost:5555 -L 8081:localhost:8081 carolyn@172.31.32.47
+
+
+docker exec -it databaserestapi /bin/sh
+docker logs -f databaserestapi
+
+

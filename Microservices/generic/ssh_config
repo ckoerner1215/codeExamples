@@ -1,0 +1,5 @@
+Host gitlab.gms.bana.com
+HostName gitlab.gms.bana.com
+User git
+IdentityFile /root/.ssh/no_passphrase_key
+

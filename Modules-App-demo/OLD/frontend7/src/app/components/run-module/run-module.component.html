@@ -1,0 +1,89 @@
+<html>
+
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.block:hover {
+  background-color: #ddd;
+  color: black;
+}
+</style>
+</head>
+
+
+<div>
+   <label class="form-label"> <b> Name </b> :  {{ currentModule.title }}</label>
+   <br>
+   <label class="form-label"> <b> Description </b> : {{ currentModule.description }} </label>
+   <br>
+   <label class="form-label"> <b> .ksh File </b> : Name of the .ksh script that will run the .exe file for the module. </label>
+       <select  class="form-control" (change)="changeKshFile($event)">
+           <option disabled>Select File</option>
+           <option *ngFor="let file of listOfFiles">{{file}}</option>
+        </select>
+
+
+<table>
+    <tr>
+        <td colspan="3">
+            <textarea class="form-control" id="inputTextToSave" cols="80" rows="25" [(ngModel)]="textAreaText"></textarea>
+        </td>
+    <tr>
+        <td>Save As:</td>
+        <td><input type="text" class="form-control" id="inputFileNameToSaveAs" [(ngModel)]="kshSaveAsName"/></td>
+        <td><button class="badge badge-warning mr-2" (click)="saveTextAsFile()">Save</button></td>
+    </tr>
+    <tr>
+       <td>Upload File:</td>
+       <td><input (change)="selectUploadFile($event)" type="file" id="upfile" name="upfile"></td>
+       <td><button
+              class="badge badge-warning mr-2"
+              (click)="uploadFile()"
+           >Upload</button>
+       </td>
+    </tr>
+
+<br>
+<br>
+<!--
+    <tr>
+        <td>Select a File to Load:</td>
+        <td><input (change)="selectFileToLoad($event)" type="file" id="fileToLoad"></td>
+        <td><button (click)="loadFileAsText()">Load Selected File</button><td>
+    </tr>
+-->
+</table>
+
+   <br>
+
+</div>
+
+
+   <button
+     type="submit"
+     class="block"
+     (click)="runModule()"
+   > Run
+   </button>
+
+<br>
+
+<div innerHTML="{{message}}"></div>
+<br>
+<br>
+<html>
+
+

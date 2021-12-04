@@ -1,0 +1,65 @@
+@Library('jenkins-shared-library')_
+
+def info = [
+        module : 'ck009',
+	    TEXT_OUTPUT_FILE_1 : 'ck009-out.txt',
+	    TEXT_OUTPUT_FILE_2 : 'CORRECT_OUTPUT/ck009-out.txt',
+]   
+
+
+pipeline {
+    agent any
+    options {
+    	buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
+    }
+    parameters {
+        booleanParam(defaultValue: false, description: '', name: 'ForceBuild')
+    }
+    stages {
+    stage('Do Everything') {
+    when {
+        anyOf{
+            changeset "**/" + info.module + "/**"
+            expression {params.ForceBuild}
+        }
+    }
+    stages {
+        stage('Are there any changes?'){
+            when{
+                changeset "**/" + info.module + "/**"
+            }
+            steps{
+                script{
+                    env.changes='yes'
+                }
+            }
+        }
+        stage('Checkout the tools repository'){
+           steps{
+               checkoutToolsRepo('master')
+           }
+        }
+        stage('Build, Run, Test') {
+            steps {
+                buildSteps ("${info.module}")
+                runKsh("${info.module}")
+                compareTextFiles("${info.module}", "${info.TEXT_OUTPUT_FILE_1}", "${info.TEXT_OUTPUT_FILE_2}")
+              }
+        }
+        stage('Finish') {
+            steps {
+                sh "cat ${info.module}/${info.TEXT_OUTPUT_FILE_1}"
+            }
+        }
+    }
+    }
+    }
+    post{
+        always{
+            script{
+                doneWithModule("${info.module}", params.ForceBuild, env.changes)
+            }
+        }
+    }
+}
+

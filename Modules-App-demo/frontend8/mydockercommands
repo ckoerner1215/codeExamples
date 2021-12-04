@@ -1,0 +1,46 @@
+sudo docker container ls
+sudo docker images
+
+sudo docker stop frontend8
+sudo docker rm frontend8
+sudo docker rmi frontend8
+
+mvn clean install
+
+sudo docker build -t frontend8 .
+
+sudo docker run -it --name frontend8 -p 5552:5552 -d frontend8
+sudo docker run -it --name frontend8 -p 5552:5552 -v /apps/carolyn/prod:/app/prod -d frontend8
+sudo docker run -it --name frontend8 -p 5552:5552 --net my-web-net -v /apps/carolyn/prod:/app/prod -d frontend8
+
+
+
+ ?? sudo docker run --name frontendclient -d --net my-web-net -p 4444:4444 frontend-image
+
+
+sudo docker exec -it frontend8 /bin/sh
+
+sudo docker logs -f frontend8
+
+ssh -L 5552:localhost:5552 carolyn@172.31.32.47
+
+ssh -L 8081:localhost:8081 -L 5552:localhost:5552 -L 8001:localhost:8001 -L 8888:localhost:8888 carolyn@172.31.32.47
+
+
+
+
+docker stop frontend8
+docker rm frontend8
+docker rmi frontend8
+docker build -t frontend8 .
+docker run -it --name frontend8 -p 5552:5552  --net my-web-net -v /apps/carolyn/prod:/app/prod -d frontend8
+
+ssh -L 8889:localhost:8889 -L 5552:localhost:5552 -L 8081:localhost:8081 carolyn@172.31.32.47
+
+ssh -L 8112:localhost:8112 -L 8111:localhost:8111 -L 8113:localhost:8113 -L 5555:localhost:5555 -L 8081:localhost:8081 carolyn@172.31.32.47
+
+
+docker exec -it frontend8 /bin/sh
+docker logs -f frontend8
+
+

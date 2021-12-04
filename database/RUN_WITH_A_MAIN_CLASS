@@ -1,0 +1,8 @@
+mvn spring-boot:run -Dstart-class=com.bana.database.DatabaseFiller
+
+or
+
+mvn spring-boot:run -Dstart-class=com.bana.database.DatabaseApplication
+
+
+
